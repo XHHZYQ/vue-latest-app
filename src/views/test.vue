@@ -1,0 +1,49 @@
+<template>
+  <div>
+    <ul>
+      <li v-for="(item, index) of list">{{ item.title }}</li>
+    </ul>
+    <button @click="onClick">修改list 数组</button>
+
+    <h3>{{ msg }}</h3>
+    <button @click="changeMsg">修改msg</button>
+
+    <br />
+    newMsg: {{ newMsg }}
+
+    <br/>
+    original: {{ original }}
+    copy: {{ copy }}
+    <div></div>
+    <button @click="original.count++">修改 original</button>
+    <button @click="copy.count++">修改 copy</button>
+  </div>
+</template>
+
+<script setup>
+import { ref, unref, reactive, computed, readonly, watchEffect } from 'vue';
+
+const list = reactive([{ title: '11' }, { title: '22' }, { title: '33' }, { title: '44' }]);
+
+// const onClick = () => list.push({ title: '55' });
+// const onClick = () => list.splice(0, 1);
+const onClick = () => (list[0].title = 'list 修改了');
+
+const msg = ref('字符串');
+const changeMsg = () => (msg.value = 'msg 修改了');
+console.log('unref', unref(msg));
+
+const newMsg = computed(() => 'new' + msg.value);
+
+
+
+const original = reactive({ count: 0 })
+const copy = readonly(original)
+
+watchEffect(() => {
+  // works for reactivity tracking
+  console.log('copy count', copy.count)
+})
+</script>
+
+<style lang="less" scoped></style>
