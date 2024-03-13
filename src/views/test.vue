@@ -21,9 +21,14 @@
 </template>
 
 <script setup>
-import { ref, unref, reactive, computed, readonly, watchEffect } from 'vue';
+import { ref, unref, reactive, computed, readonly, watchEffect, isProxy, isReadonly } from 'vue'; 
 
-const list = reactive([{ title: '11' }, { title: '22' }, { title: '33' }, { title: '44' }]);
+const originalList = [{ title: '11' }, { title: '22' }, { title: '33' }, { title: '44' }];
+const list = reactive(originalList);
+const readonlyList = readonly(originalList);
+console.log('isProxy 1', isProxy(list));
+console.log('isProxy 2', isProxy(readonlyList));
+console.log('isReadonly', isReadonly(readonlyList));
 
 // const onClick = () => list.push({ title: '55' });
 // const onClick = () => list.splice(0, 1);
