@@ -17,11 +17,16 @@
     <div></div>
     <button @click="original.count++">修改 original</button>
     <button @click="copy.count++">修改 copy</button>
+
+    <br/>
+    shallow：{{ shallow }}
+    <button @click="changeShallow">修改 shallow</button>
+    <button @click="triggerRefFn">触发 shallow</button>
   </div>
 </template>
 
 <script setup>
-import { ref, unref, reactive, computed, readonly, watchEffect } from 'vue';
+import { ref, unref, reactive, computed, readonly, watchEffect, shallowRef, triggerRef } from 'vue';
 
 const list = reactive([{ title: '11' }, { title: '22' }, { title: '33' }, { title: '44' }]);
 
@@ -44,6 +49,26 @@ watchEffect(() => {
   // works for reactivity tracking
   console.log('copy count', copy.count)
 })
+
+const hello = {
+  greet: 'Hello, world'
+};
+const shallow = shallowRef(hello)
+
+// 触发该副作用第一次应该会打印 "Hello, world"
+watchEffect(() => {
+  console.log('shallow。。', shallow.value.greet)
+})
+
+// 这次变更不应触发副作用，因为这个 ref 是浅层的
+const changeShallow = () => {
+  hello.greet = 'hello you !'
+  // shallow.value = { greet: 'Hello, universe' };
+console.log('hello', shallow.value);
+};
+
+// 打印 "Hello, universe"
+const triggerRefFn =  () => triggerRef(shallow)
 </script>
 
 <style lang="less" scoped></style>
