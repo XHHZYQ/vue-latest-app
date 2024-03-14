@@ -60,7 +60,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { schoolList, apiAreaOptions } from '../api/organization.js';
+import { schoolList, apiAreaOptions } from '../../api/organization.js';
 
 const cascaderProps = {
   expandTrigger: 'hover',

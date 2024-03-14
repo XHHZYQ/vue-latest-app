@@ -76,7 +76,7 @@ import {
   apiDataMap,
   apiAreaOptions,
   organizeOrganizeList
-} from '../api/organization.js';
+} from '../../api/organization.js';
 
 const cascaderProps = {
   expandTrigger: 'hover',
