@@ -97,7 +97,6 @@ const onSubmit = () => {
 
 const getTableList = () => {
   schoolList({ ...formModel, page: 1, limit: 10 }).then(({ content }) => {
-    console.log('getTableList。。', content);
     tableData.value = content.list;
   });
 };
@@ -115,6 +114,3 @@ onMounted(() => {
   getOptions();
 });
 </script>
-
-<style lang="less" scoped>
-</style>

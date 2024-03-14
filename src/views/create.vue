@@ -5,7 +5,7 @@
         <el-cascader
           @change="areaChange"
           v-model="formModel.areas"
-          :options="areaOptions"
+          :options="formOptions.area"
           :props="cascaderProps"
           placeholder="请选择省市区"
           filterable
@@ -16,7 +16,7 @@
       <el-form-item label="学段" prop="levels">
         <el-select v-model="formModel.levels" multiple placeholder="请选择学段">
           <el-option
-            v-for="(item, index) of levelOptions"
+            v-for="(item, index) of formOptions.level"
             :key="index"
             :label="item.value"
             :value="item.key"
@@ -27,7 +27,7 @@
       <el-form-item label="学校" prop="name">
         <el-select v-model="formModel.name" @change="schoolChange" placeholder="请选择学校">
           <el-option
-            v-for="(item, index) of schoolOptions"
+            v-for="(item, index) of formOptions.school"
             :key="index"
             :label="item.value"
             :value="item.key"
@@ -94,11 +94,10 @@ const fileList = [
 ];
 
 const router = useRouter();
-console.log('router', router);
 const form = ref(null);
 const formModel = reactive({
   areas: undefined,
-  levels: undefined,
+  levels: [],
   name: undefined,
   contact: undefined,
   contactMobile: undefined,
@@ -108,7 +107,7 @@ const formModel = reactive({
 });
 const formRules = reactive({
   areas: { required: true, message: '请选择省市区', trigger: 'change' },
-  levels: { required: true, message: '请选择学校', trigger: 'change' },
+  levels: { required: true, message: '请选择学段', trigger: 'change' },
   name: { required: true, message: '请输入学校名称', trigger: 'blur' },
   contact: { required: true, message: '请输入联系人', trigger: 'blur' },
   contactMobile: { required: true, message: '请输入联系电话', trigger: 'blur' },
@@ -116,9 +115,11 @@ const formRules = reactive({
   managerPsd: { required: true, message: '请输入登录密码', trigger: 'blur' },
   logo: { required: true, message: '请上传学校logo' }
 });
-const areaOptions = ref([]);
-const levelOptions = ref([]);
-const schoolOptions = ref([]);
+const formOptions = reactive({
+  area: [],
+  level: [],
+  school: []
+});
 
 onMounted(() => {
   getOptions();
@@ -126,18 +127,16 @@ onMounted(() => {
 
 const getOptions = () => {
   apiAreaOptions().then(({ content }) => {
-    areaOptions.value = content.areas;
+    formOptions.area = content.areas;
   });
 
   const params = { codes: ['school.level'] };
   apiDataMap(params).then(({ content }) => {
-    levelOptions.value = content['school.level'];
-    console.log('levelOptions', levelOptions.value);
+    formOptions.level = content['school.level'];
   });
 };
 
 const areaChange = (value) => {
-  console.log('areaChange', value);
   if (value?.length) {
     formModel.provinceId = value[0];
     formModel.cityId = value[1];
@@ -157,7 +156,7 @@ const getSchoolOptions = () => {
   // 是否虚拟 0: 否, 1: 是
   const param = { type: 'school', limit: -1, isVirtual: 1, provinceId, cityId, districtId };
   organizeOrganizeList(param).then(({ content }) => {
-    schoolOptions.value = content.list?.map((item) => ({
+    formOptions.school = content.list?.map((item) => ({
       key: item.id,
       value: item.name
     }));
@@ -165,14 +164,13 @@ const getSchoolOptions = () => {
 };
 
 const schoolChange = (value) => {
-  console.log('schoolChange', value);
   formModel.id = value;
 };
 
 const onSubmit = () => {
   form.value.validate((valid) => {
     if (valid) {
-      const option = schoolOptions.value?.filter((item) => item.key === formModel.name);
+      const option = formOptions.school?.filter((item) => item.key === formModel.name);
       option?.length && (formModel.name = option[0].value);
       delete formModel.areas;
 
@@ -184,8 +182,6 @@ const onSubmit = () => {
       schoolEdit(params).then(({ content }) => {
         router.back();
       });
-    } else {
-      return false;
     }
   });
 };
