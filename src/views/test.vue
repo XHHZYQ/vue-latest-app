@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, unref, reactive, computed, readonly, watchEffect, isProxy, isReadonly } from 'vue'; 
+import { ref, unref, reactive, computed, readonly, watchEffect, isProxy, isReadonly, onUpdated } from 'vue'; 
 
 const originalList = [{ title: '11' }, { title: '22' }, { title: '33' }, { title: '44' }];
 const list = reactive(originalList);
@@ -49,6 +49,10 @@ watchEffect(() => {
   // works for reactivity tracking
   console.log('copy count', copy.count)
 })
+
+onUpdated(() => {
+  console.log('onUpdated。。', list)
+});
 </script>
 
 <style lang="less" scoped></style>
