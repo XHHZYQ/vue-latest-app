@@ -1,6 +1,9 @@
 <template>
-  <div class="school-list">
-    <el-form ref="form" :model="formModel" :rules="formRules" inline label-width="100px">
+  <div class="container-box">
+    <!-- <div v-for="item in list">{{ item.value }}</div>
+    <el-button @click="changeList">修改 list</el-button> -->
+
+    <el-form ref="form" :model="formModel" :rules="formRules" inline label-width="60px">
       <el-form-item label="姓名" prop="name">
         <el-input v-model="formModel.name" placeholder="请输入名称" />
       </el-form-item>
@@ -12,6 +15,10 @@
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
+
+    <section style="margin-bottom: 20px;">
+      <el-button type="success" @click="onAdd">添加</el-button>
+    </section>
 
     <el-table :data="tableData" style="width: 100%" border>
       <el-table-column prop="id" label="ID" width="80" />
@@ -52,6 +59,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { schoolList, apiAreaOptions } from '../api/organization.js';
 
 const cascaderProps = {
@@ -63,18 +71,27 @@ const cascaderProps = {
   children: 'children'
 };
 
+const router = useRouter();
 const form = ref(null);
 const formModel = reactive({ name: undefined, areas: undefined });
 const formRules = reactive({});
 const tableData = ref([]);
 const areaOptions = ref([]);
+const list = reactive([
+  { key: '1', value: '北京' },
+  { key: '2', value: '上海' },
+  { key: '3', value: '深圳' }
+]);
 
-// 提交方法
+const changeList = () => {
+  // list.forEach((item, index) => index === 1 && (item.value = '厦门'));
+  // list.splice(0, 1, { key: '1', value: '厦门' });
+  list.push({ key: '4', value: '厦门' });
+};
+
 const onSubmit = () => {
   form.value.validate((valid) => {
-    if (valid) {
-      alert('submit!');
-    }
+    getTableList();
   });
 };
 
@@ -91,6 +108,8 @@ const getOptions = () => {
   });
 };
 
+const onAdd = () => router.push({ name: 'schoolCreate' });
+
 onMounted(() => {
   getTableList();
   getOptions();
@@ -98,8 +117,4 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
-.school-list {
-  margin: 20px;
-  padding: 20px;
-}
 </style>

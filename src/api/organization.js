@@ -1,11 +1,19 @@
 
 import { $post } from '../utils/request.js';
 
+/**-----------------------------通用接口------------------------------------------ */
 /** 省市区三级联动*/
 export const apiAreaOptions = (params) => $post({
   url: '/public/area-tree',
   params
 });
+
+/** 获取数据字典*/
+export const apiDataMap = (params) => $post({
+  url: '/datamap/get-leaf',
+  params
+});
+/**-----------------------------通用接口------------------------------------------ */
 
 /**----------------------------------------------------------------------- */
 // 学校列表
@@ -41,6 +49,11 @@ export const schoolDelete = (params) => $post({
 // 学校状态
 export const schoolStatus = (params) => $post({
   url: '/school/enable-disable',
+  params
+});
+
+export const organizeOrganizeList = params => $post({
+  url: '/organize/organize-list',
   params
 });
 /**----------------------------------------------------------------------- */
