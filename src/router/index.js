@@ -12,16 +12,16 @@ const router = createRouter({
     {
       path: '/school',
       name: 'school',
-      component: () => import('@/views/school.vue')
+      component: () => import('@/views/tableForm/school.vue')
     },
     {
       path: '/school/create',
       name: 'schoolCreate',
-      component: () => import('@/views/create.vue')
+      component: () => import('@/views/tableForm/create.vue')
     },
     {
-      path: '/foobar',
-      component: () => import('@/views/FooBar.vue')
+      path: '/propEmit',
+      component: () => import('@/views/propEmit/index.vue')
     },
     {
       path: '/about',
