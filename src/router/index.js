@@ -24,6 +24,14 @@ const router = createRouter({
       component: () => import('@/views/propEmit/index.vue')
     },
     {
+      path: '/plugin',
+      component: () => import('@/views/plugin.vue')
+    },
+    {
+      path: '/suspense',
+      component: () => import('@/views/suspense/index.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
