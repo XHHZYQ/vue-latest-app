@@ -39,4 +39,13 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+:deep(.input-box) {
+  border: 1px solid red;
+}
+
+::v-deep .input-box {
+  border: 1px solid #ccc;
+}
+
+</style>

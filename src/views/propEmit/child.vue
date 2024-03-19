@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div><span>My input</span> <input v-model="childModel" /></div>
+    <div class="input-box"><span>My input</span> <input v-model="childModel" /></div>
 
     <div>
       信息：<span>{{ message }}</span>
@@ -17,12 +17,14 @@
 </template>
 
 <script setup>
-import { defineModel, defineEmits, defineProps, defineExpose, defineSlots, useSlots } from 'vue';
+import { defineModel, defineEmits, defineProps, defineExpose, defineSlots, useSlots, useAttrs } from 'vue';
 const props = defineProps({
   message: { type: String },
   visible: { type: Boolean }
 });
 
+const attrs = useAttrs();
+console.log('attrs。。: ', attrs);
 const emits = defineEmits(['update:visible']);
 
 const changeVisible = () => emits('update:visible', false);
